@@ -53,17 +53,17 @@ EOT
     managed_disk_cmk_rotation_to_latest_version_enabled = optional(bool)
     managed_disk_cmk_key_vault_key_id                   = optional(string)
     load_balancer_backend_address_pool_id               = optional(string)
-    public_network_access_enabled                       = optional(bool, true)
-    infrastructure_encryption_enabled                   = optional(bool, false)
+    public_network_access_enabled                       = optional(bool) # Default: true
+    infrastructure_encryption_enabled                   = optional(bool) # Default: false
     default_storage_firewall_enabled                    = optional(bool)
-    customer_managed_key_enabled                        = optional(bool, false)
+    customer_managed_key_enabled                        = optional(bool) # Default: false
     access_connector_id                                 = optional(string)
     managed_disk_cmk_key_vault_id                       = optional(string)
     tags                                                = optional(map(string))
     custom_parameters = optional(object({
       machine_learning_workspace_id                        = optional(string)
       nat_gateway_name                                     = optional(string)
-      no_public_ip                                         = optional(bool, true)
+      no_public_ip                                         = optional(bool) # Default: true
       private_subnet_name                                  = optional(string)
       private_subnet_network_security_group_association_id = optional(string)
       public_ip_name                                       = optional(string)
@@ -75,10 +75,10 @@ EOT
       vnet_address_prefix                                  = optional(string)
     }))
     enhanced_security_compliance = optional(object({
-      automatic_cluster_update_enabled      = optional(bool, false)
-      compliance_security_profile_enabled   = optional(bool, false)
+      automatic_cluster_update_enabled      = optional(bool) # Default: false
+      compliance_security_profile_enabled   = optional(bool) # Default: false
       compliance_security_profile_standards = optional(set(string))
-      enhanced_security_monitoring_enabled  = optional(bool, false)
+      enhanced_security_monitoring_enabled  = optional(bool) # Default: false
     }))
   }))
 }

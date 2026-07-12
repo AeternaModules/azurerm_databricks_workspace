@@ -1,3 +1,7 @@
+output "databricks_workspaces_id" {
+  description = "Map of id values across all databricks_workspaces, keyed the same as var.databricks_workspaces"
+  value       = { for k, v in azurerm_databricks_workspace.databricks_workspaces : k => v.id }
+}
 output "databricks_workspaces_access_connector_id" {
   description = "Map of access_connector_id values across all databricks_workspaces, keyed the same as var.databricks_workspaces"
   value       = { for k, v in azurerm_databricks_workspace.databricks_workspaces : k => v.access_connector_id }

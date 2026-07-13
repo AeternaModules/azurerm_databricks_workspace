@@ -53,17 +53,17 @@ EOT
     managed_disk_cmk_rotation_to_latest_version_enabled = optional(bool)
     managed_disk_cmk_key_vault_key_id                   = optional(string)
     load_balancer_backend_address_pool_id               = optional(string)
-    public_network_access_enabled                       = optional(bool) # Default: true
-    infrastructure_encryption_enabled                   = optional(bool) # Default: false
+    public_network_access_enabled                       = optional(bool)
+    infrastructure_encryption_enabled                   = optional(bool)
     default_storage_firewall_enabled                    = optional(bool)
-    customer_managed_key_enabled                        = optional(bool) # Default: false
+    customer_managed_key_enabled                        = optional(bool)
     access_connector_id                                 = optional(string)
     managed_disk_cmk_key_vault_id                       = optional(string)
     tags                                                = optional(map(string))
     custom_parameters = optional(object({
       machine_learning_workspace_id                        = optional(string)
       nat_gateway_name                                     = optional(string)
-      no_public_ip                                         = optional(bool) # Default: true
+      no_public_ip                                         = optional(bool)
       private_subnet_name                                  = optional(string)
       private_subnet_network_security_group_association_id = optional(string)
       public_ip_name                                       = optional(string)
@@ -75,28 +75,12 @@ EOT
       vnet_address_prefix                                  = optional(string)
     }))
     enhanced_security_compliance = optional(object({
-      automatic_cluster_update_enabled      = optional(bool) # Default: false
-      compliance_security_profile_enabled   = optional(bool) # Default: false
+      automatic_cluster_update_enabled      = optional(bool)
+      compliance_security_profile_enabled   = optional(bool)
       compliance_security_profile_standards = optional(set(string))
-      enhanced_security_monitoring_enabled  = optional(bool) # Default: false
+      enhanced_security_monitoring_enabled  = optional(bool)
     }))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.databricks_workspaces : (
-        contains(["standard", "premium", "trial"], v.sku)
-      )
-    ])
-    error_message = "must be one of: standard, premium, trial"
-  }
-  validation {
-    condition = alltrue([
-      for k, v in var.databricks_workspaces : (
-        v.managed_resource_group_name == null || (length(v.managed_resource_group_name) > 0)
-      )
-    ])
-    error_message = "must not be empty"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_databricks_workspace's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -133,6 +117,12 @@ EOT
   #   source:    [from resourcegroups.ValidateName: invalid when len(value) == 0]
   # path: resource_group_name
   #   source:    [from resourcegroups.ValidateName] !matched
+  # path: sku
+  #   condition: contains(["standard", "premium", "trial"], value)
+  #   message:   must be one of: standard, premium, trial
+  # path: managed_resource_group_name
+  #   condition: length(value) > 0
+  #   message:   must not be empty
   # path: network_security_group_rules_required
   #   source:    validation.StringInSlice value list is not a literal []string - likely a generated PossibleValuesFor*() helper; resolve separately
   # path: load_balancer_backend_address_pool_id

@@ -8,7 +8,7 @@ output "databricks_workspaces_access_connector_id" {
 }
 output "databricks_workspaces_custom_parameters" {
   description = "Map of custom_parameters values across all databricks_workspaces, keyed the same as var.databricks_workspaces"
-  value       = { for k, v in azurerm_databricks_workspace.databricks_workspaces : k => v.custom_parameters if v.custom_parameters != null && length(v.custom_parameters) > 0 }
+  value       = { for k, v in azurerm_databricks_workspace.databricks_workspaces : k => one(v.custom_parameters) if v.custom_parameters != null && length(v.custom_parameters) > 0 }
 }
 output "databricks_workspaces_customer_managed_key_enabled" {
   description = "Map of customer_managed_key_enabled values across all databricks_workspaces, keyed the same as var.databricks_workspaces"
@@ -24,7 +24,7 @@ output "databricks_workspaces_disk_encryption_set_id" {
 }
 output "databricks_workspaces_enhanced_security_compliance" {
   description = "Map of enhanced_security_compliance values across all databricks_workspaces, keyed the same as var.databricks_workspaces"
-  value       = { for k, v in azurerm_databricks_workspace.databricks_workspaces : k => v.enhanced_security_compliance if v.enhanced_security_compliance != null && length(v.enhanced_security_compliance) > 0 }
+  value       = { for k, v in azurerm_databricks_workspace.databricks_workspaces : k => one(v.enhanced_security_compliance) if v.enhanced_security_compliance != null && length(v.enhanced_security_compliance) > 0 }
 }
 output "databricks_workspaces_infrastructure_encryption_enabled" {
   description = "Map of infrastructure_encryption_enabled values across all databricks_workspaces, keyed the same as var.databricks_workspaces"
